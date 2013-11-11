@@ -1,0 +1,6 @@
+key "Alt+Ctrl+j"	amixer set Master 5+
+key "Alt+Ctrl+k"	amixer set Master 5-
+key "Alt+Ctrl+t"	gnome-terminal
+key "Alt+Ctrl+f"	firefox
+key "Alt+Ctrl+w"	xfe
+key "Alt+Ctrl+n"	NetworkManager
