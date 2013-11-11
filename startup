@@ -1,0 +1,10 @@
+#!/bin/sh
+nm-applet &
+sleep 1
+rox --pinboard=MyPinboard &
+sleep 4
+sh ~/.icewm/drop.sh &
+sleep 15
+sh ~/.icewm/wt.sh &
+sleep 5
+indicator-sensors &
