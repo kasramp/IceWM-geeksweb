@@ -1,20 +1,22 @@
 #!/bin/bash
 #upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep -E "state|to\ full|percentage"
-password=$1
-percentage=$(upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep -E "percentage")
-set -- $percentage
-value=$2
-value=${value%\%*}
-value=${value%.*}
-if [ $value -le 10 ]
+DISCHARGING="discharging"
+PASSWORD=$1
+PERCENTAGE=$(upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep -E "percentage")
+STATE=$(upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep -E "state")
+STATE=`echo $STATE | sed s/'state: '//`
+set -- $PERCENTAGE
+VALUE=$2
+VALUE=${VALUE%\%*}
+VALUE=${VALUE%.*}
+if [ $VALUE -le 10 ] && [ "$STATE" == "$DISCHARGING" ]
 then
-vars=$(upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep -E "state|time|percentage")
-set -- $vars
-#echo $vars
+VARS=$(upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep -E "state|time|percentage")
+set -- $VARS
 zenity --warning --title="Low Power" --text=$1" "$2"\nremaining: "$6" mins\n"$8" "$9 --display=:0.0
 fi
-if [ $value -le 5 ]
+if [ $VALUE -le 5 ] && [ "$STATE" == "$DISCHARGING" ]
 then
 exec gnome-screensaver-command -l &
-echo $password | sudo -S pm-suspend
+echo $PASSWORD | sudo -S pm-suspend
 fi
